@@ -69,7 +69,7 @@
     background: linear-gradient(100deg,
             rgba(255, 255, 255, 0.062),
             rgba(255, 255, 255, 0.02));
-    scale: 0.98;
+    scale: 0.95;
 }
 
 .liquid-button:focus {
@@ -95,7 +95,7 @@
 
 .button-alt:active {
     background: var(--accent-dark);
-    scale: 0.98;
+    scale: 0.95;
 }
 
 .button-alt:focus {
