@@ -6,6 +6,9 @@ document.documentElement.style.setProperty(
   nav.offsetHeight + 'px'
 );
 
+console.log("CSS variable --pic-width set to:", pic.offsetWidth + 'px');
+
+
 async function gambling(caseName) {
   let itemsArray = Array.from({ length: 100 }); // random generated item list
   let itemCount = 3; // item variety
@@ -56,7 +59,6 @@ async function gambling(caseName) {
     // insert file name into html
     document.getElementById("gamblingPrevious2").src = gamblingPicturePrevious2;
     document.getElementById("gamblingPrevious").src = gamblingPicturePrevious;
-    document.getElementById("gamblingCurrent").src = gamblingPicture;
     document.getElementById("gamblingNext").src = gamblingPictureNext;
     document.getElementById("gamblingNext2").src = gamblingPictureNext2;
 
