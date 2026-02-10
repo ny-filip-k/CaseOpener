@@ -6,8 +6,16 @@ document.documentElement.style.setProperty(
   nav.offsetHeight + 'px'
 );
 
-async function gambling() {
-  let hugeHardCoding = Array.from({ length: 100 }, () => Math.random() < 0.5 ? 1 : 3);
+async function gambling(caseName) {
+  let hugeHardCoding = Array.from({ length: 100 });
+  let itemCount = 3;
+
+  for (let i = 0; i < 100; i++) {
+    let randomNumber = Math.floor(Math.random() * itemCount) + 1;
+    hugeHardCoding[i] = randomNumber;
+  }
+
+
   let velocity = 1;
   let position = 0;
 
@@ -25,7 +33,7 @@ async function gambling() {
     console.log(`item ${hugeHardCoding[Math.round(position)]}`)
 
 
-    let gamblingPicture = `${item}.png`;
+    let gamblingPicture = `${caseName}${item}.png`;
     document.getElementById("gamblingCurrent").src = gamblingPicture;
 
     await sleep(100);
