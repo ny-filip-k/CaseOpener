@@ -7,51 +7,65 @@ document.documentElement.style.setProperty(
 );
 
 async function gambling(caseName) {
-  let hugeHardCoding = Array.from({ length: 100 });
-  let itemCount = 3;
+  let itemsArray = Array.from({ length: 100 }); // random generated item list
+  let itemCount = 3; // item variety
   let velocity = 1;
   let position = 0;
-  let subCoordinate = 0;
+  let subCoordinate = 0; // velocity is normally getting floored, this is the unfloored velocity - floored velocity (future proofing for animations)
+  let debugValue = 0;
+  let finalPosition;
 
 
-
-  for (let i = 0; i < 100; i++) {
+  // create item array
+  for (let i = 0; i < itemsArray.length; i++) {
     let randomNumber = Math.floor(Math.random() * itemCount) + 1;
-    hugeHardCoding[i] = randomNumber;
+    itemsArray[i] = randomNumber; // save item
   }
 
 
-  for (let i = 0; i < 20; i++) {
-    position += velocity;
-    velocity -= 0.01;
-    //console.log(`velocity ${Math.round(velocity)}`);
-    console.log(`position ${Math.round(position)}`);
+  // gambling spin
+  for (let i = 0; i < itemsArray.length; i++) {
+    position += velocity; // move pictures
+    debugValue++;
+    velocity -= 0.01; // decrease velocity
 
-    subCoordinate = position - Math.floor(position);
-    console.log(subCoordinate);
+    subCoordinate = position - Math.floor(position); // unused, needed for potential smooth animation in the future
 
-    item = hugeHardCoding[Math.round(position)];
-    itemPrevious = hugeHardCoding[Math.round(position - 1)];
-    itemNext = hugeHardCoding[Math.round(position + 1)];
+    // define item number for every position
+    item = itemsArray[Math.round(position)];
+    itemPrevious2 = itemsArray[Math.round(position - 2)];
+    itemPrevious = itemsArray[Math.round(position - 1)];
+    itemNext = itemsArray[Math.round(position + 1)];
+    itemNext2 = itemsArray[Math.round(position + 2)];
 
+    // failsafe for broken velocity
     if (velocity < 0) {
       velocity = 0;
     }
-    //console.log(`item ${hugeHardCoding[Math.round(position)]}`)
+
+    //console.log(`item ${itemsArray[Math.round(position)]}`)
 
 
+    // convert item number into file name
     let gamblingPicture = `/images/${caseName}${item}.png`;
+    let gamblingPicturePrevious2 = `/images/${caseName}${itemPrevious2}.png`;
     let gamblingPicturePrevious = `/images/${caseName}${itemPrevious}.png`;
     let gamblingPictureNext = `/images/${caseName}${itemNext}.png`;
+    let gamblingPictureNext2 = `/images/${caseName}${itemNext2}.png`;
 
+    // insert file name into html
+    document.getElementById("gamblingPrevious2").src = gamblingPicturePrevious2;
     document.getElementById("gamblingPrevious").src = gamblingPicturePrevious;
     document.getElementById("gamblingCurrent").src = gamblingPicture;
     document.getElementById("gamblingNext").src = gamblingPictureNext;
+    document.getElementById("gamblingNext2").src = gamblingPictureNext2;
 
-    await sleep(100);
+    document.getElementById("debug").textContent = debugValue;
+
+    await sleep(50); // slowdown
   }
 
-
+  finalPosition = position;
 
   console.log(`${position} final`)
   return position;

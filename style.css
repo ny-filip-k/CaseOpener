@@ -20,3 +20,9 @@ body {
 #page {
     padding-top: var(--nav-height);
 }
+
+#gamblingCurrent {
+    border: solid;
+    border-color: var(--accent);
+    border-width: 0.5vh;
+}
