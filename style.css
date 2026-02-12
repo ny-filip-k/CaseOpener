@@ -26,5 +26,23 @@ body {
 #gamblingCurrent {
     border: solid;
     border-color: var(--accent);
+    border-width: 0.2vh;
+}
+
+.gamblingImages {
+    padding: 1vh;
+    background-color: var(--bg-end);
+    border: solid;
+    border-color: var(--bg-start);
     border-width: 0.5vh;
+}
+
+#gamblingCurrent {
+    transition: transform 0.3s ease;
+    background-color: var(--bg-end);
+    padding: 1vh;
+}
+
+.bigger {
+    transform: scale(1.3);
 }

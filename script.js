@@ -57,6 +57,7 @@ async function gambling(caseName) {
     let gamblingPictureNext2 = `/images/${caseName}${itemNext2}.png`;
 
     // insert file name into html
+    document.getElementById("gamblingCurrent").src = gamblingPicture;
     document.getElementById("gamblingPrevious2").src = gamblingPicturePrevious2;
     document.getElementById("gamblingPrevious").src = gamblingPicturePrevious;
     document.getElementById("gamblingNext").src = gamblingPictureNext;
@@ -67,11 +68,20 @@ async function gambling(caseName) {
     await sleep(50); // slowdown
   }
 
+
   finalPosition = position;
+
+  const element = document.getElementById("gamblingCurrent");
+  element.classList.add("bigger");
+
+  setTimeout(() => {
+    element.classList.remove("bigger");
+  }, 1000);
+
 
   console.log(`${position} final`)
   return position;
 }
 
 
-// gambling();
+
