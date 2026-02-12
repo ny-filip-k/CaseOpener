@@ -6,4 +6,4 @@ Meticulously crafted by the finest Glas-Flex professionals at our headquarters i
 
 
 
-<img src="GlasFlex.png" alt="GlasFlex" width="200"/>
+<img src="/images/GlasFlex.png" alt="GlasFlex" width="200"/>

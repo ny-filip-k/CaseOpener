@@ -1,13 +1,14 @@
-const sleep = ms => new Promise(resolve => setTimeout(resolve, ms));
+const FRAME_DELAY = ms => new Promise(resolve => setTimeout(resolve, ms));
 
-const nav = document.querySelector('.navbar');
+const NAV = document.querySelector('.navbar');
 document.documentElement.style.setProperty(
   '--nav-height',
-  nav.offsetHeight + 'px'
+  NAV.offsetHeight + 'px'
 );
 
 async function gambling(caseName) {
-  let itemsArray = Array.from({ length: 100 }); // random generated item list
+  let listLength = 2; // item list lenth
+  let itemsList = Array.from({ length: 100 * listLength }); // random generated item list
   let itemCount = 3; // item variety
   let velocity = 1;
   let position = 0;
@@ -26,33 +27,33 @@ async function gambling(caseName) {
   document.getElementById("gamblingButton").onclick = "";
 
   // create item array
-  for (let i = 0; i < itemsArray.length; i++) {
+  for (let i = 0; i < itemsList.length; i++) {
     let randomNumber = Math.floor(Math.random() * itemCount) + 1;
-    itemsArray[i] = randomNumber; // save item
+    itemsList[i] = randomNumber; // save item
   }
 
 
   // gambling spin
-  for (let i = 0; i < itemsArray.length; i++) {
+  for (let i = 0; i < itemsList.length; i++) {
     position += velocity; // move pictures
     debugValue++;
-    velocity -= 0.01; // decrease velocity
+    velocity -= 0.01 / listLength; // decrease velocity
 
     subCoordinate = position - Math.floor(position); // unused, needed for potential smooth animation in the future
 
     // define item number for every position
-    item = itemsArray[Math.round(position)];
-    itemPrevious2 = itemsArray[Math.round(position - 2)];
-    itemPrevious = itemsArray[Math.round(position - 1)];
-    itemNext = itemsArray[Math.round(position + 1)];
-    itemNext2 = itemsArray[Math.round(position + 2)];
+    item = itemsList[Math.round(position)];
+    itemPrevious2 = itemsList[Math.round(position - 2)];
+    itemPrevious = itemsList[Math.round(position - 1)];
+    itemNext = itemsList[Math.round(position + 1)];
+    itemNext2 = itemsList[Math.round(position + 2)];
 
     // failsafe for broken velocity
     if (velocity < 0) {
       velocity = 0;
     }
 
-    //console.log(`item ${itemsArray[Math.round(position)]}`)
+    //console.log(`item ${itemsList[Math.round(position)]}`)
 
 
     // convert item number into path
@@ -71,7 +72,7 @@ async function gambling(caseName) {
 
     document.getElementById("debug").textContent = debugValue;
 
-    await sleep(); // slowdown
+    await FRAME_DELAY();
   }
 
 
@@ -93,6 +94,8 @@ async function gambling(caseName) {
 
 
   console.log(`${finalPosition} final`)
+
+  
   return finalPosition;
 }
 
