@@ -19,6 +19,7 @@ body {
     justify-content: center;
 }
 
+
 #page {
     padding-top: var(--nav-height);
 }
@@ -31,10 +32,12 @@ body {
 
 .gamblingImages {
     padding: 1vh;
-    background-color: var(--bg-end);
-    border: solid;
-    border-color: var(--bg-start);
-    border-width: 0.5vh;
+    
+    margin: 1vh;
+}
+
+.gamblingImages img {
+    margin: 1vh;
 }
 
 #gamblingCurrent {
