@@ -33,14 +33,13 @@ body {
 
 .gamblingImages {
     padding: 1vh;
-
     margin: 1vh;
 }
 
 .gamblingImages img {
     margin: 1vh;
-    width: 30vh;
-    width: 30vh;
+    width: 25vh;
+    width: 25vh;
 }
 
 #gamblingCurrent {

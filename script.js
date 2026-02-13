@@ -59,7 +59,7 @@ async function playAnimation(caseName) {
     } await FRAME_DELAY(1000)
     chestActive = false
     gambling(caseName);
-  } return chestActive;
+  } 
 }
 
 
