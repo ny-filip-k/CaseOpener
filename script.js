@@ -1,10 +1,14 @@
-const FRAME_DELAY = ms => new Promise(resolve => setTimeout(resolve, ms));
-
+// navbar fix
 const NAV = document.querySelector('.navbar');
 document.documentElement.style.setProperty(
   '--nav-height',
   NAV.offsetHeight + 'px'
 );
+
+
+
+// delay for gambling rendering
+const FRAME_DELAY = ms => new Promise(resolve => setTimeout(resolve, ms));
 
 class ItemClass {
   constructor(name, image, index, maxDurability, currentDurability) {
@@ -31,10 +35,10 @@ async function gambling(caseName) {
   let subCoordinate = 0; // velocity is normally getting floored, this is the unfloored velocity - floored velocity (future proofing for animations)
   let debugValue = 0;
   let finalPosition = "";
-  const DURABILITY = Math.random();
-  console.log(DURABILITY);
+  const DURABILITY = Math.random(); // random durability factor
 
-  // picture path
+
+ // picture path
   let gamblingPicture = '';
   let gamblingPicturePrevious2 = '';
   let gamblingPicturePrevious = '';
@@ -51,13 +55,14 @@ async function gambling(caseName) {
   }
 
 
+
   // gambling spin
   for (let i = 0; i < itemsList.length; i++) {
     position += velocity; // move pictures
     debugValue++;
     velocity -= 0.01 / listLength; // decrease velocity
 
-    subCoordinate = position - Math.floor(position); // unused, needed for potential smooth animation in the future
+    // subCoordinate = position - Math.floor(position); unused, needed for smooth animation in the future
 
     // define item number for every position
     item = itemsList[Math.round(position)];
@@ -72,7 +77,6 @@ async function gambling(caseName) {
     }
 
     //console.log(`item ${itemsList[Math.round(position)]}`)
-
 
     // convert item number into path
     gamblingPicture = `/images/${caseName}/${item}.png`;
@@ -90,9 +94,8 @@ async function gambling(caseName) {
 
     //document.getElementById("debug").textContent = debugValue;
 
-    await FRAME_DELAY();
+    await FRAME_DELAY(16);
   }
-
 
   finalPosition = `${caseName}${item}`;
 
