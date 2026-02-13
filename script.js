@@ -16,6 +16,8 @@ function UpdateWallet(addedMoney) {
 
 UpdateWallet(50);
 
+
+
 // get URL parameter "c"
 const params = new URLSearchParams(window.location.search);
 const caseName = params.get("c") || "default"; // fallback to "default" if missing
@@ -48,7 +50,7 @@ async function playAnimation(caseName) {
   document.getElementById("gamblingNext").src = "images/0.png";
   document.getElementById("gamblingNext2").src = "images/0.png";
 
-  for (i = 1; i < 8; i++) {
+  for (i = 1; i < 9; i++) {
     animationPicture = `images/animation${caseName}/${i}.png`
     document.getElementById("gamblingCurrent").src = animationPicture;
     await FRAME_DELAY(30);
@@ -83,9 +85,6 @@ async function gambling(caseName) {
   let gamblingPictureNext = '';
   let gamblingPictureNext2 = '';
 
-  // block button
-  document.getElementById("gamblingButton").onclick = "";
-
   // create item array
   for (let i = 0; i < itemsList.length; i++) {
     let randomNumber = Math.floor(Math.random() * itemCount) + 1;
@@ -94,7 +93,7 @@ async function gambling(caseName) {
 
   // rarity system
   itemsList = itemsList.map(item => {
-    unlucky = Math.random;
+    unlucky = Math.random();
     if (unlucky > 0.3) {
       if (item - 1 !== 0) {
         return item - 1;
@@ -154,11 +153,6 @@ async function gambling(caseName) {
   setTimeout(() => {
     winningItem.classList.remove("bigger");
   }, 1000);
-
-  // unblock button
-  document.getElementById("gamblingButton").onclick = function () {
-    playAnimation(caseName);
-  };
 
   const PRICE = Math.floor((item + 1) ** (item + 1) / DURABILITY);
 
