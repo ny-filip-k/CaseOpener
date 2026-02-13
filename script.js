@@ -15,7 +15,7 @@ function UpdateWallet(addedMoney) {
 }
 
 UpdateWallet(50);
-
+chestActive = false;
 
 
 // get URL parameter "c"
@@ -44,126 +44,131 @@ class ItemClass {
 }
 
 async function playAnimation(caseName) {
-  let animationPicture;
-  document.getElementById("gamblingPrevious2").src = "images/0.png";
-  document.getElementById("gamblingPrevious").src = "images/0.png";
-  document.getElementById("gamblingNext").src = "images/0.png";
-  document.getElementById("gamblingNext2").src = "images/0.png";
+  if (chestActive === false) {
+    chestActive = true;
+    let animationPicture;
+    document.getElementById("gamblingPrevious2").src = "images/0.png";
+    document.getElementById("gamblingPrevious").src = "images/0.png";
+    document.getElementById("gamblingNext").src = "images/0.png";
+    document.getElementById("gamblingNext2").src = "images/0.png";
 
-  for (i = 1; i < 9; i++) {
-    animationPicture = `images/animation${caseName}/${i}.png`
-    document.getElementById("gamblingCurrent").src = animationPicture;
-    await FRAME_DELAY(30);
-  } await FRAME_DELAY(1000)
-  gambling(caseName);
+    for (i = 1; i < 9; i++) {
+      animationPicture = `images/animation${caseName}/${i}.png`
+      document.getElementById("gamblingCurrent").src = animationPicture;
+      await FRAME_DELAY(30);
+    } await FRAME_DELAY(1000)
+    chestActive = false
+    gambling(caseName);
+  } return chestActive;
 }
 
 
 async function gambling(caseName) {
-  let listLength = 2; // item list lenth
-  let itemsList = Array.from({ length: 100 * listLength }); // random generated item list
-  let itemCount = 3; // item variety
-  let velocity = 1;
-  let position = 0;
-  let subCoordinate = 0; // velocity is normally getting floored, this is the unfloored velocity - floored velocity (future proofing for animations)
-  let debugValue = 0;
-  let finalPosition = "";
-  let unlucky = 0; // rarity decrease
-  const DURABILITY = Math.random(); // random durability factor
+  if (chestActive === false) {
+    chestActive = true;
+    let listLength = 2; // item list lenth
+    let itemsList = Array.from({ length: 100 * listLength }); // random generated item list
+    let itemCount = 3; // item variety
+    let velocity = 1;
+    let position = 0;
+    let subCoordinate = 0; // velocity is normally getting floored, this is the unfloored velocity - floored velocity (future proofing for animations)
+    let debugValue = 0;
+    let finalPosition = "";
+    let unlucky = 0; // rarity decrease
+    const DURABILITY = Math.random(); // random durability factor
 
-  // go bankrupt
-  if (wallet < 30) {
-    return wallet;
-  }
-
-  UpdateWallet(-30); //pay 
-
-  // picture path
-  let gamblingPicture = '';
-  let gamblingPicturePrevious2 = '';
-  let gamblingPicturePrevious = '';
-  let gamblingPictureNext = '';
-  let gamblingPictureNext2 = '';
-
-  // create item array
-  for (let i = 0; i < itemsList.length; i++) {
-    let randomNumber = Math.floor(Math.random() * itemCount) + 1;
-    itemsList[i] = randomNumber; // save item
-  }
-
-  // rarity system
-  itemsList = itemsList.map(item => {
-    unlucky = Math.random();
-    if (unlucky > 0.3) {
-      if (item - 1 !== 0) {
-        return item - 1;
-      } else {
-        return 1;
-      }
-    } return item;
-  });
-
-
-  // gambling spin
-  for (let i = 0; i < itemsList.length; i++) {
-    position += velocity; // move pictures
-    debugValue++;
-    velocity -= 0.01 / listLength; // decrease velocity
-
-    // subCoordinate = position - Math.floor(position); unused, needed for smooth animation in the future
-
-    // define item number for every position
-    item = itemsList[Math.round(position)];
-    itemPrevious2 = itemsList[Math.round(position - 2)];
-    itemPrevious = itemsList[Math.round(position - 1)];
-    itemNext = itemsList[Math.round(position + 1)];
-    itemNext2 = itemsList[Math.round(position + 2)];
-
-    // failsafe for broken velocity
-    if (velocity < 0) {
-      velocity = 0;
+    // go bankrupt
+    if (wallet < 30) {
+      return wallet;
     }
 
-    // convert item number into path
-    gamblingPicture = `/images/${caseName}/${item}.png`;
-    gamblingPicturePrevious2 = `/images/${caseName}/${itemPrevious2}.png`;
-    gamblingPicturePrevious = `/images/${caseName}/${itemPrevious}.png`;
-    gamblingPictureNext = `/images/${caseName}/${itemNext}.png`;
-    gamblingPictureNext2 = `/images/${caseName}/${itemNext2}.png`;
+    UpdateWallet(-30); //pay 
 
-    // insert path into html
-    document.getElementById("gamblingCurrent").src = gamblingPicture;
-    document.getElementById("gamblingPrevious2").src = gamblingPicturePrevious2;
-    document.getElementById("gamblingPrevious").src = gamblingPicturePrevious;
-    document.getElementById("gamblingNext").src = gamblingPictureNext;
-    document.getElementById("gamblingNext2").src = gamblingPictureNext2;
+    // picture path
+    let gamblingPicture = '';
+    let gamblingPicturePrevious2 = '';
+    let gamblingPicturePrevious = '';
+    let gamblingPictureNext = '';
+    let gamblingPictureNext2 = '';
 
-    //document.getElementById("debug").textContent = debugValue;
+    // create item array
+    for (let i = 0; i < itemsList.length; i++) {
+      let randomNumber = Math.floor(Math.random() * itemCount) + 1;
+      itemsList[i] = randomNumber; // save item
+    }
 
-    await FRAME_DELAY(16);
+    // rarity system
+    itemsList = itemsList.map(item => {
+      unlucky = Math.random();
+      if (unlucky > 0.3) {
+        if (item - 1 !== 0) {
+          return item - 1;
+        } else {
+          return 1;
+        }
+      } return item;
+    });
+
+
+    // gambling spin
+    for (let i = 0; i < itemsList.length; i++) {
+      position += velocity; // move pictures
+      debugValue++;
+      velocity -= 0.01 / listLength; // decrease velocity
+
+      // subCoordinate = position - Math.floor(position); unused, needed for smooth animation in the future
+
+      // define item number for every position
+      item = itemsList[Math.round(position)];
+      itemPrevious2 = itemsList[Math.round(position - 2)];
+      itemPrevious = itemsList[Math.round(position - 1)];
+      itemNext = itemsList[Math.round(position + 1)];
+      itemNext2 = itemsList[Math.round(position + 2)];
+
+      // failsafe for broken velocity
+      if (velocity < 0) {
+        velocity = 0;
+      }
+
+      // convert item number into path
+      gamblingPicture = `/images/${caseName}/${item}.png`;
+      gamblingPicturePrevious2 = `/images/${caseName}/${itemPrevious2}.png`;
+      gamblingPicturePrevious = `/images/${caseName}/${itemPrevious}.png`;
+      gamblingPictureNext = `/images/${caseName}/${itemNext}.png`;
+      gamblingPictureNext2 = `/images/${caseName}/${itemNext2}.png`;
+
+      // insert path into html
+      document.getElementById("gamblingCurrent").src = gamblingPicture;
+      document.getElementById("gamblingPrevious2").src = gamblingPicturePrevious2;
+      document.getElementById("gamblingPrevious").src = gamblingPicturePrevious;
+      document.getElementById("gamblingNext").src = gamblingPictureNext;
+      document.getElementById("gamblingNext2").src = gamblingPictureNext2;
+
+      //document.getElementById("debug").textContent = debugValue;
+
+      await FRAME_DELAY(16);
+    }
+
+    finalPosition = `${caseName}${item}`;
+
+    // winning item scaleup
+    const winningItem = document.getElementById("gamblingCurrent");
+    winningItem.classList.add("bigger");
+
+    // winning item scaledown
+    setTimeout(() => {
+      winningItem.classList.remove("bigger");
+    }, 1000);
+
+    const PRICE = Math.floor((item + 1) ** (item + 1) / DURABILITY);
+
+    // display results
+    document.getElementById("durabilityH1").textContent = `Durability: ${DURABILITY}`;
+    document.getElementById("price").textContent = `Price: ${PRICE} Emeralds`
+
+    UpdateWallet(PRICE);
+
+    chestActive = false;
+    return finalPosition;
   }
-
-  finalPosition = `${caseName}${item}`;
-
-  // winning item scaleup
-  const winningItem = document.getElementById("gamblingCurrent");
-  winningItem.classList.add("bigger");
-
-  // winning item scaledown
-  setTimeout(() => {
-    winningItem.classList.remove("bigger");
-  }, 1000);
-
-  const PRICE = Math.floor((item + 1) ** (item + 1) / DURABILITY);
-
-  // display results
-  document.getElementById("durabilityH1").textContent = `Durability: ${DURABILITY}`;
-  document.getElementById("price").textContent = `Price: ${PRICE} Emeralds`
-  //document.getElementById("wallet").textContent
-
-
-  UpdateWallet(PRICE);
-
-
-  return finalPosition;
 }
