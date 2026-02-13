@@ -25,7 +25,7 @@ const button = document.getElementById("gamblingButton");
 
 // run gambling with the case from URL
 button.addEventListener("click", () => {
-  gambling(caseName);
+  playAnimation(caseName);
 });
 
 // delay for gambling rendering
@@ -40,6 +40,22 @@ class ItemClass {
     this.currentDurability = currentDurability;
   }
 }
+
+async function playAnimation(caseName) {
+  let animationPicture;
+  document.getElementById("gamblingPrevious2").src = "images/0.png";
+  document.getElementById("gamblingPrevious").src = "images/0.png";
+  document.getElementById("gamblingNext").src = "images/0.png";
+  document.getElementById("gamblingNext2").src = "images/0.png";
+
+  for (i = 1; i < 8; i++) {
+    animationPicture = `images/animation${caseName}/${i}.png`
+    document.getElementById("gamblingCurrent").src = animationPicture;
+    await FRAME_DELAY(30);
+  } await FRAME_DELAY(1000)
+  gambling(caseName);
+}
+
 
 async function gambling(caseName) {
   let listLength = 2; // item list lenth
@@ -141,7 +157,7 @@ async function gambling(caseName) {
 
   // unblock button
   document.getElementById("gamblingButton").onclick = function () {
-    gambling(caseName);
+    playAnimation(caseName);
   };
 
   const PRICE = Math.floor((item + 1) ** (item + 1) / DURABILITY);
