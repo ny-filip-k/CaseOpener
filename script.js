@@ -107,13 +107,13 @@ async function gambling(caseName) {
 
   // unblock button
   document.getElementById("gamblingButton").onclick = function () {
-    gambling('');
+    gambling(caseName);
   };
 
 
   console.log(`${finalPosition} final`)
 
-  
-  
+
+
   return finalPosition;
 }
