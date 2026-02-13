@@ -6,6 +6,22 @@ document.documentElement.style.setProperty(
   NAV.offsetHeight + 'px'
 );
 
+class ItemClass {
+  constructor(name, image, index, maxDurability, currentDurability) {
+    this.name = name;
+    this.image = image;
+    this.index = index;
+    this.maxDurability = maxDurability;
+    this.currentDurability = currentDurability;
+  }
+}
+
+default2 = ["Diamond Sword", "images/2.png", "2", 1561, DURABILITY];
+
+const inventory = [];
+
+
+
 async function gambling(caseName) {
   let listLength = 2; // item list lenth
   let itemsList = Array.from({ length: 100 * listLength }); // random generated item list
@@ -15,6 +31,8 @@ async function gambling(caseName) {
   let subCoordinate = 0; // velocity is normally getting floored, this is the unfloored velocity - floored velocity (future proofing for animations)
   let debugValue = 0;
   let finalPosition = "";
+  const DURABILITY = Math.random();
+  console.log(DURABILITY);
 
   // picture path
   let gamblingPicture = '';
@@ -57,11 +75,11 @@ async function gambling(caseName) {
 
 
     // convert item number into path
-    gamblingPicture = `/images/${caseName}${item}.png`;
-    gamblingPicturePrevious2 = `/images/${caseName}${itemPrevious2}.png`;
-    gamblingPicturePrevious = `/images/${caseName}${itemPrevious}.png`;
-    gamblingPictureNext = `/images/${caseName}${itemNext}.png`;
-    gamblingPictureNext2 = `/images/${caseName}${itemNext2}.png`;
+    gamblingPicture = `/images/${caseName}/${item}.png`;
+    gamblingPicturePrevious2 = `/images/${caseName}/${itemPrevious2}.png`;
+    gamblingPicturePrevious = `/images/${caseName}/${itemPrevious}.png`;
+    gamblingPictureNext = `/images/${caseName}/${itemNext}.png`;
+    gamblingPictureNext2 = `/images/${caseName}/${itemNext2}.png`;
 
     // insert path into html
     document.getElementById("gamblingCurrent").src = gamblingPicture;
@@ -70,13 +88,13 @@ async function gambling(caseName) {
     document.getElementById("gamblingNext").src = gamblingPictureNext;
     document.getElementById("gamblingNext2").src = gamblingPictureNext2;
 
-    document.getElementById("debug").textContent = debugValue;
+    //document.getElementById("debug").textContent = debugValue;
 
     await FRAME_DELAY();
   }
 
 
-  finalPosition = gamblingPicture;
+  finalPosition = `${caseName}${item}`;
 
   // winning item scaleup
   const winningItem = document.getElementById("gamblingCurrent");
@@ -96,8 +114,6 @@ async function gambling(caseName) {
   console.log(`${finalPosition} final`)
 
   
+  
   return finalPosition;
 }
-
-
-
