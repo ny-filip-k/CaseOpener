@@ -1,3 +1,5 @@
+let wallet = 50;
+
 // navbar fix
 const NAV = document.querySelector('.navbar');
 document.documentElement.style.setProperty(
@@ -5,7 +7,17 @@ document.documentElement.style.setProperty(
   NAV.offsetHeight + 'px'
 );
 
+// Get the URL parameter "c"
+const params = new URLSearchParams(window.location.search);
+const caseName = params.get("c") || "default"; // fallback to "default" if missing
 
+// Find the button
+const button = document.getElementById("gamblingButton");
+
+// Set button click to run gambling with the case from URL
+button.addEventListener("click", () => {
+  gambling(caseName);
+});
 
 // delay for gambling rendering
 const FRAME_DELAY = ms => new Promise(resolve => setTimeout(resolve, ms));
@@ -22,8 +34,6 @@ class ItemClass {
 
 default2 = ["Diamond Sword", "images/2.png", "2", 1561, DURABILITY];
 
-const inventory = [];
-
 
 
 async function gambling(caseName) {
@@ -35,10 +45,11 @@ async function gambling(caseName) {
   let subCoordinate = 0; // velocity is normally getting floored, this is the unfloored velocity - floored velocity (future proofing for animations)
   let debugValue = 0;
   let finalPosition = "";
+  const UNLUCKY = Math.random(); // rarity decrease
   const DURABILITY = Math.random(); // random durability factor
 
 
- // picture path
+  // picture path
   let gamblingPicture = '';
   let gamblingPicturePrevious2 = '';
   let gamblingPicturePrevious = '';
@@ -53,6 +64,17 @@ async function gambling(caseName) {
     let randomNumber = Math.floor(Math.random() * itemCount) + 1;
     itemsList[i] = randomNumber; // save item
   }
+
+  itemsList = itemsList.map(item => {
+    if (UNLUCKY > 0.3) {
+      if (item - 1 !== 0) {
+        return item - 1;
+      } else {
+        return 1;
+      }
+    } return item;
+  });
+
 
 
 
@@ -113,6 +135,11 @@ async function gambling(caseName) {
     gambling(caseName);
   };
 
+  const PRICE = (item + 1) ** (item + 1) / DURABILITY;
+
+  document.getElementById("durabilityH1").textContent = `Durability: ${DURABILITY}`;
+  document.getElementById("price").textContent = `Price: ${Math.floor(PRICE)} Emeralds`
+  //document.getElementById("wallet").textContent
 
   console.log(`${finalPosition} final`)
 
