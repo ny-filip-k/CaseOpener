@@ -1,5 +1,3 @@
-let wallet = 50;
-
 // navbar fix
 const NAV = document.querySelector('.navbar');
 document.documentElement.style.setProperty(
@@ -7,14 +5,25 @@ document.documentElement.style.setProperty(
   NAV.offsetHeight + 'px'
 );
 
-// Get the URL parameter "c"
+wallet = 0;
+
+// add/remove money
+function UpdateWallet(addedMoney) {
+  wallet += addedMoney;
+  document.getElementById("wallet").textContent = `Wallet: ${wallet} Emeralds`;
+  return wallet;
+}
+
+UpdateWallet(50);
+
+// get URL parameter "c"
 const params = new URLSearchParams(window.location.search);
 const caseName = params.get("c") || "default"; // fallback to "default" if missing
 
-// Find the button
+// find the button
 const button = document.getElementById("gamblingButton");
 
-// Set button click to run gambling with the case from URL
+// run gambling with the case from URL
 button.addEventListener("click", () => {
   gambling(caseName);
 });
@@ -32,10 +41,6 @@ class ItemClass {
   }
 }
 
-default2 = ["Diamond Sword", "images/2.png", "2", 1561, DURABILITY];
-
-
-
 async function gambling(caseName) {
   let listLength = 2; // item list lenth
   let itemsList = Array.from({ length: 100 * listLength }); // random generated item list
@@ -45,9 +50,15 @@ async function gambling(caseName) {
   let subCoordinate = 0; // velocity is normally getting floored, this is the unfloored velocity - floored velocity (future proofing for animations)
   let debugValue = 0;
   let finalPosition = "";
-  const UNLUCKY = Math.random(); // rarity decrease
+  let unlucky = 0; // rarity decrease
   const DURABILITY = Math.random(); // random durability factor
 
+  // go bankrupt
+  if (wallet < 30) {
+    return wallet;
+  }
+
+  UpdateWallet(-30); //pay 
 
   // picture path
   let gamblingPicture = '';
@@ -65,8 +76,10 @@ async function gambling(caseName) {
     itemsList[i] = randomNumber; // save item
   }
 
+  // rarity system
   itemsList = itemsList.map(item => {
-    if (UNLUCKY > 0.3) {
+    unlucky = Math.random;
+    if (unlucky > 0.3) {
       if (item - 1 !== 0) {
         return item - 1;
       } else {
@@ -74,8 +87,6 @@ async function gambling(caseName) {
       }
     } return item;
   });
-
-
 
 
   // gambling spin
@@ -97,8 +108,6 @@ async function gambling(caseName) {
     if (velocity < 0) {
       velocity = 0;
     }
-
-    //console.log(`item ${itemsList[Math.round(position)]}`)
 
     // convert item number into path
     gamblingPicture = `/images/${caseName}/${item}.png`;
@@ -135,14 +144,15 @@ async function gambling(caseName) {
     gambling(caseName);
   };
 
-  const PRICE = (item + 1) ** (item + 1) / DURABILITY;
+  const PRICE = Math.floor((item + 1) ** (item + 1) / DURABILITY);
 
+  // display results
   document.getElementById("durabilityH1").textContent = `Durability: ${DURABILITY}`;
-  document.getElementById("price").textContent = `Price: ${Math.floor(PRICE)} Emeralds`
+  document.getElementById("price").textContent = `Price: ${PRICE} Emeralds`
   //document.getElementById("wallet").textContent
 
-  console.log(`${finalPosition} final`)
 
+  UpdateWallet(PRICE);
 
 
   return finalPosition;
