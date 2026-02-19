@@ -1,29 +1,79 @@
 // navbar fix
-const NAV = document.querySelector('.navbar');
+const NAV = document.querySelector(".navbar");
 document.documentElement.style.setProperty(
-  '--nav-height',
-  NAV.offsetHeight + 'px'
+  "--nav-height",
+  NAV.offsetHeight + "px",
 );
+// get c parameter
+const params = new URLSearchParams(window.location.search);
+const caseName = params.get("c") || "default"; // fallback to "default" if missing
 
-wallet = 0;
+// Set Constant of gambling button
+const button = document.getElementById("gamblingButton");
+
+// classes and data
+const item_array_len = 1000;
+class Enchantments {
+  constructor(name, id, lvl, value) {
+    this.name = name;
+    this.id = id;
+    this.lvl = lvl;
+    this.value = value;
+  }
+}
+class Item_ {
+  constructor(case_name, id, name, float, value, enchantments) {
+    this.case_name = case_name;
+    this.id = id;
+    this.name = name;
+    this.float = float;
+    this.value = value;
+    this.enchantments = enchantments;
+  }
+}
+class Case_Items {
+  constructor(id, name, chance, value) {
+    this.id = id;
+    this.name = name;
+    this.chance = chance;
+    this.value = value;
+  }
+}
+class Case {
+  constructor(name, Case_Items) {
+    this.name = name;
+    this.Case_Items = Case_Items;
+  }
+}
+class User_class {
+  constructor() {
+    this.Inventory = [];
+    this.wallet = 0;
+  }
+}
+// create crates and items
+let cest = [
+  new Case_Items(4, "Nehterite_sword", 0.1, 3),
+  new Case_Items(3, "Dia_Sword", 0.3, 2),
+  new Case_Items(2, "Iron_Sword", 0.6, 1.5),
+  new Case_Items(1, "Wood_sword", 1, 1),
+];
+let cristmas_cest = [
+  new Case_Items(3, "Nehterite_sword", 0.1, 3),
+  new Case_Items(2, "Dia_Sword", 0.4, 2),
+  new Case_Items(1, "Wood_sword", 1, 1),
+];
+let Cases = [new Case("cest", cest), new Case("cristmass_cest", cristmas_cest)];
+//globa inventory
+let user = new User_class([], 0);
 
 // add/remove money
 function UpdateWallet(addedMoney) {
-  wallet += addedMoney;
-  document.getElementById("wallet").textContent = `Wallet: ${wallet} Emeralds`;
-  return wallet;
+  user.wallet += addedMoney;
 }
 
 UpdateWallet(50);
 chestActive = false;
-
-
-// get URL parameter "c"
-const params = new URLSearchParams(window.location.search);
-const caseName = params.get("c") || "default"; // fallback to "default" if missing
-
-// find the button
-const button = document.getElementById("gamblingButton");
 
 // run gambling with the case from URL
 button.addEventListener("click", () => {
@@ -31,7 +81,7 @@ button.addEventListener("click", () => {
 });
 
 // delay for gambling rendering
-const FRAME_DELAY = ms => new Promise(resolve => setTimeout(resolve, ms));
+const FRAME_DELAY = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
 
 class ItemClass {
   constructor(name, image, index, maxDurability, currentDurability) {
@@ -44,24 +94,25 @@ class ItemClass {
 }
 
 async function playAnimation(caseName) {
+  //set default pictures empty
   if (chestActive === false) {
     chestActive = true;
     let animationPicture;
-    document.getElementById("gamblingPrevious2").src = "images/0.png";
-    document.getElementById("gamblingPrevious").src = "images/0.png";
-    document.getElementById("gamblingNext").src = "images/0.png";
-    document.getElementById("gamblingNext2").src = "images/0.png";
+    document.getElementById("gamblingPrevious2").src = "images/empty.png";
+    document.getElementById("gamblingPrevious").src = "images/empty.png";
+    document.getElementById("gamblingNext").src = "images/empty.png";
+    document.getElementById("gamblingNext2").src = "images/empty.png";
 
     for (i = 1; i < 9; i++) {
-      animationPicture = `images/animation${caseName}/${i}.png`
+      animationPicture = `images/${caseName}/animation/${i}.png`;
       document.getElementById("gamblingCurrent").src = animationPicture;
       await FRAME_DELAY(30);
-    } await FRAME_DELAY(1000)
-    chestActive = false
+    }
+    await FRAME_DELAY(1000);
+    chestActive = false;
     gambling(caseName);
-  } 
+  }
 }
-
 
 async function gambling(caseName) {
   if (chestActive === false) {
@@ -82,14 +133,14 @@ async function gambling(caseName) {
       return wallet;
     }
 
-    UpdateWallet(-30); //pay 
+    UpdateWallet(-30); //pay
 
     // picture path
-    let gamblingPicture = '';
-    let gamblingPicturePrevious2 = '';
-    let gamblingPicturePrevious = '';
-    let gamblingPictureNext = '';
-    let gamblingPictureNext2 = '';
+    let gamblingPicture = "";
+    let gamblingPicturePrevious2 = "";
+    let gamblingPicturePrevious = "";
+    let gamblingPictureNext = "";
+    let gamblingPictureNext2 = "";
 
     // create item array
     for (let i = 0; i < itemsList.length; i++) {
@@ -98,7 +149,7 @@ async function gambling(caseName) {
     }
 
     // rarity system
-    itemsList = itemsList.map(item => {
+    itemsList = itemsList.map((item) => {
       unlucky = Math.random();
       if (unlucky > 0.3) {
         if (item - 1 !== 0) {
@@ -106,9 +157,9 @@ async function gambling(caseName) {
         } else {
           return 1;
         }
-      } return item;
+      }
+      return item;
     });
-
 
     // gambling spin
     for (let i = 0; i < itemsList.length; i++) {
@@ -139,7 +190,8 @@ async function gambling(caseName) {
 
       // insert path into html
       document.getElementById("gamblingCurrent").src = gamblingPicture;
-      document.getElementById("gamblingPrevious2").src = gamblingPicturePrevious2;
+      document.getElementById("gamblingPrevious2").src =
+        gamblingPicturePrevious2;
       document.getElementById("gamblingPrevious").src = gamblingPicturePrevious;
       document.getElementById("gamblingNext").src = gamblingPictureNext;
       document.getElementById("gamblingNext2").src = gamblingPictureNext2;
@@ -163,8 +215,9 @@ async function gambling(caseName) {
     const PRICE = Math.floor((item + 1) ** (item + 1) / DURABILITY);
 
     // display results
-    document.getElementById("durabilityH1").textContent = `Durability: ${DURABILITY}`;
-    document.getElementById("price").textContent = `Price: ${PRICE} Emeralds`
+    document.getElementById("durabilityH1").textContent =
+      `Durability: ${DURABILITY}`;
+    document.getElementById("price").textContent = `Price: ${PRICE} Emeralds`;
 
     UpdateWallet(PRICE);
 
